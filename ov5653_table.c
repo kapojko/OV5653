@@ -565,6 +565,7 @@ struct vin_reg_16_8 ov5653_share_regs[OV5653_SHARE_REGS] = {
 	{0x3011, 0x10},/* PLL multiplier */
     {0x3012, 0x02}, /* [2:0]R_PREDIV (010: Divide by 2) */
 #elif OV5653_XCLK_MHZ == 8
+    /* XCLK=8MHz, PLL=?? , PCLK=32MHz (actual measurement) */
 	{0x3010, 0x10},/* [7:4]PLL DIVS divider, [3:0]PLL DIVM divider */
 	{0x3011, 0x10},/* PLL multiplier */
     {0x3012, 0x02}, /* [2:0]R_PREDIV (010: Divide by 2) */
