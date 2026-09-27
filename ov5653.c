@@ -98,11 +98,16 @@ void OV5653_FillShareRegs(void)
         OV5653_WR_Reg(regs[i].addr, regs[i].data);
 }
 
-void OV5653_ReadSensorID(uint16_t *pid) {
-    u8 pidh, pidl;
-    OV5653_RD_Reg(OV5653_CHIP_ID_H, &pidh);
-    OV5653_RD_Reg(OV5653_CHIP_ID_L, &pidl);
+int OV5653_ReadSensorID(uint16_t *pid) {
+    // Initialize to 0xFF so a failed I2C read (data buffer untouched)
+    // yields 0xFFFF instead of uninitialized stack garbage
+    u8 pidh = 0xFF, pidl = 0xFF;
+    if (OV5653_RD_Reg(OV5653_CHIP_ID_H, &pidh) != 0)
+        return -1;
+    if (OV5653_RD_Reg(OV5653_CHIP_ID_L, &pidl) != 0)
+        return -1;
     *pid = ((u16)pidh << 8) | pidl;
+    return 0;
 }
 
 int OV5653_Init(void)
@@ -111,13 +116,14 @@ int OV5653_Init(void)
 
     /* query sensor id */
     u16 sensorId;
-    OV5653_ReadSensorID(&sensorId);
-
-    if (sensorId == 0xFFFF) { // 0xFFFF - failed I2C communication
+    if (OV5653_ReadSensorID(&sensorId) != 0) {
         return -1;
     }
 
-    // TODO: check sensor id value
+    // Check sensor id value
+    if (sensorId != OV5653_CHIP_ID) {
+        return -1;
+    }
 
     // Fill share registers
     OV5653_FillShareRegs();

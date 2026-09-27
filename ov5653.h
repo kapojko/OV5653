@@ -7,6 +7,7 @@
 #include <stdbool.h>
 
 #define OV5653_SCCB_SLAVE_ID 0x6C
+#define OV5653_CHIP_ID 0x5653
 
 #ifndef OV5653_XCLK_MHZ
 #define OV5653_XCLK_MHZ 24
@@ -45,7 +46,8 @@ void OV5653_StartStreaming(void);
 void OV5653_SwReset(void);
 void OV5653_FillShareRegs(void);
 
-void OV5653_ReadSensorID(uint16_t *pid);
+// Return 0 on success, non-zero on I2C read failure
+int OV5653_ReadSensorID(uint16_t *pid);
 
 int OV5653_Init(void);
 
