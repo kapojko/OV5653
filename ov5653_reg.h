@@ -224,6 +224,10 @@
                             /*Bit[2]:	Debug mode*/
                             /*Bit[1]:	AGC manual*/
                             /*Bit[0]: AEC manual*/
+#define OV5653_MANUAL_CTRL_AEC		(1u << 0) /* AEC manual (0 = auto) */
+#define OV5653_MANUAL_CTRL_AGC		(1u << 1) /* AGC manual (0 = auto) */
+#define OV5653_MANUAL_CTRL_DEBUG	(1u << 2) /* Debug mode */
+#define OV5653_MANUAL_CTRL_LATCH_1F (1u << 4) /* Gain latch delay: 1 frame */
 #define OV5653_LONG_GAIN_H			0x3508	/*0x00 RW Bit[7:1]: Debug mode Bit[0]:	long_gain[8]*/
 #define OV5653_LONG_GAIN_L			0x3509	/*0x00 RW Bit[7:0]: long_gain[7:0]*/
 #define OV5653_AGC_ADJ_H			0x350A	/*0x00 RW Bit[7:1]: Debug mode. Bit[0]:	Gain high bit Gain = (0x350B[6]+1) ?? (0x350B[5]+1) ?? (0x350B[4]+1) ?? (0x350B[3:0]/16+1)*/

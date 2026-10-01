@@ -372,6 +372,35 @@ int OV5653_SetAgcAdj(int agc_index) {
     return 0;
 }
 
+int OV5653_SetAecAgcAuto(bool autoMode) {
+    /* Keep gain latch delay (1 frame) and debug bit as in the shared table
+       baseline 0x17, only toggle the AEC/AGC manual bits */
+    u8 manualCtrl = OV5653_MANUAL_CTRL_LATCH_1F | OV5653_MANUAL_CTRL_DEBUG;
+    if (!autoMode) {
+        manualCtrl |= OV5653_MANUAL_CTRL_AEC | OV5653_MANUAL_CTRL_AGC;
+    }
+
+    if (OV5653_WR_Reg(OV5653_MANUAL_CTRL, manualCtrl) != 0) {
+        return -1;
+    }
+
+    return 0;
+}
+
+int OV5653_SetAwbGain(u16 red, u16 green, u16 blue) {
+    /* 12-bit gains, H registers use bits[3:0] only */
+    if (OV5653_WR_Reg(OV5653_AWB_RED_GAIN_H, (u8)((red >> 8) & 0x0F)) != 0 ||
+        OV5653_WR_Reg(OV5653_AWB_RED_GAIN_L, (u8)(red & 0xFF)) != 0 ||
+        OV5653_WR_Reg(OV5653_AWB_GREEN_GAIN_H, (u8)((green >> 8) & 0x0F)) != 0 ||
+        OV5653_WR_Reg(OV5653_AWB_GREEB_GAIN_L, (u8)(green & 0xFF)) != 0 ||
+        OV5653_WR_Reg(OV5653_AWB_BLUE_GAIN_H, (u8)((blue >> 8) & 0x0F)) != 0 ||
+        OV5653_WR_Reg(OV5653_AWB_BLUE_GAIN_L, (u8)(blue & 0xFF)) != 0) {
+        return -1;
+    }
+
+    return 0;
+}
+
 int OV5653_SetMirrorMode(bool mirror_hor, bool mirror_ver, bool video_mode_720p)
 {
     u32 reg3621, reg505a, reg505b, reg3827, reg3818;

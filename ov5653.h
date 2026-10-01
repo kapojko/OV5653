@@ -65,5 +65,15 @@ void OV5653_SetBinningSumming(u32 bin_sum_config);
 int OV5653_SetAgcIndex(int agc_idx);
 int OV5653_SetAgcAdj(int agc_index);
 
+/* AEC/AGC control mode (0x3503). autoMode=true: sensor AEC/AGC adjusts
+   exposure and gain itself (AEC target: WPT/BPT 0x3A0F/0x3A10).
+   autoMode=false: fixed exposure (OV5653_SetShutterRow) and gain
+   (OV5653_SetAgcAdj) from firmware. */
+int OV5653_SetAecAgcAuto(bool autoMode);
+
+/* Manual white balance gains, 12-bit each (0x0400 = 1024 = 1.0x).
+   Requires 0x3406[0] AWB gain manual enable and 0x5046[3] AWB-gain_en. */
+int OV5653_SetAwbGain(u16 red, u16 green, u16 blue);
+
 
 #endif // OV5653_H
