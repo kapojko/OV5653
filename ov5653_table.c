@@ -526,7 +526,10 @@ struct vin_reg_16_8 ov5653_share_regs[OV5653_SHARE_REGS] = {
 	{0x4006, 0x00},/* Black level target [9:8] */
 	{0x4007, 0x04},/* Black level target [7:0], 1b */
 	{0x401D, 0x08},/* 20090818: 0x28->0x08 (BLC trigger by gain change -> BLC trigger by every frame), 1b */
-	{0x5046, 0x01},/* [3]AWB-gain_en, [0]ISP_en */
+	/* MODIFIED (baseline was 0x01): datasheet default is 0x09; without bit[3]
+	   AWB-gain_en the sensor ignores AWB gain registers 0x3400-0x3405 entirely,
+	   disabling manual (and auto) white balance gain application */
+	{0x5046, 0x09},/* [3]AWB-gain_en, [0]ISP_en */
 	{0x3810, 0x40},
 	{0x3836, 0x41},
 	{0x505f, 0x04},
